@@ -1,0 +1,2 @@
+add_executable(small_world_static_analysis src/main.cpp)
+target_link_libraries(small_world_static_analysis small_world_io)

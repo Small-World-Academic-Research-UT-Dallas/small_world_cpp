@@ -1,0 +1,2 @@
+add_executable(small_world_simulation src/main.cpp)
+target_link_libraries(small_world_simulation small_world_io)
