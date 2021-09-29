@@ -24,7 +24,7 @@ public:
   Student(std::shared_ptr<const std::vector<std::size_t>> sections);
   virtual ~Student();
 
-  std::shared_ptr<const std::vector<std::size_t>> get_sections() const;
+  virtual std::shared_ptr<const std::vector<std::size_t>> get_sections() const final;
 
 private:
   std::shared_ptr<const std::vector<std::size_t>> sections;

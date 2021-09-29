@@ -4,11 +4,7 @@
 #include <memory>
 #include <vector>
 
-/*
-
-Almost exactly like the Student class, but for Sections
-
-*/
+// Almost exactly like the Student class, but for Sections
 
 namespace small_world::io {
 
@@ -17,7 +13,7 @@ public:
   Section(std::shared_ptr<const std::vector<std::size_t>> students);
   virtual ~Section();
 
-  std::shared_ptr<const std::vector<std::size_t>> get_students() const;
+  virtual std::shared_ptr<const std::vector<std::size_t>> get_students() const final;
 
 private:
   std::shared_ptr<const std::vector<std::size_t>> students;
