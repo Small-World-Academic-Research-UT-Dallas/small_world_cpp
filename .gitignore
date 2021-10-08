@@ -1,2 +1,6 @@
 build
 bin
+*.xls*
+*.csv
+*.tsv
+.vscode/*
