@@ -1,5 +1,7 @@
 #pragma once
 
+namespace small_world::simulation { class Student; }
+
 /*
 
 Represents a single student for the purpose of simulation

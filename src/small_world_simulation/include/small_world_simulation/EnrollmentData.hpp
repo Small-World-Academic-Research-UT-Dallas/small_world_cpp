@@ -1,5 +1,7 @@
 #pragma once
 
+namespace small_world::simulation { class EnrollmentData; }
+
 #include <memory>
 #include <vector>
 

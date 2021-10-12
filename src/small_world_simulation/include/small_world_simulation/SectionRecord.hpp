@@ -1,5 +1,7 @@
 #pragma once
 
+namespace small_world::simulation { class SectionRecord; }
+
 #include <cstddef>
 #include <memory>
 #include <vector>

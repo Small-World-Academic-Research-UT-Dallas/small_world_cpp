@@ -1,5 +1,7 @@
 #pragma once
 
+namespace small_world::simulation { class StudentRecord; }
+
 /*
 
 All the static data needed for each student in the simulation. Currently, no

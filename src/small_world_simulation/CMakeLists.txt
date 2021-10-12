@@ -1,10 +1,15 @@
 add_library(small_world_simulation_lib OBJECT
-  src/SectionRecord.cpp
-  src/StudentRecord.cpp
-  src/EnrollmentData.cpp
-  src/Student.cpp)
+src/SectionRecord.cpp
+src/StudentRecord.cpp
+src/EnrollmentData.cpp
+src/Student.cpp
+src/Section.cpp
+src/Simulation.cpp)
+
 target_include_directories(small_world_simulation_lib PUBLIC include)
 target_link_libraries(small_world_simulation_lib small_world_io)
 
 add_executable(small_world_simulation src/main.cpp)
-target_link_libraries(small_world_simulation small_world_simulation_lib small_world_io)
+target_link_libraries(small_world_simulation
+small_world_simulation_lib
+small_world_io)
