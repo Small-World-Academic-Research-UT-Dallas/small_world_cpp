@@ -8,7 +8,7 @@
 
 using small_world::io::CsvEnrollmentDataReader;
 
-CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream input) {
+CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream & input) {
   this->students = std::make_shared<std::vector<small_world::io::Student>>();
   this->sections = std::make_shared<std::vector<small_world::io::Section>>();
 }
