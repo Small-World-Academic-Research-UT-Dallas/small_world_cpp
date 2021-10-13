@@ -12,14 +12,14 @@ Represents a section of a class for the purpose of simulation
 
 */
 
-#include "small_world_simulation/SectionRecord.hpp"
 #include "small_world_simulation/Simulation.hpp"
+#include "small_world_io/Section.hpp"
 
 namespace small_world::simulation {
 
 class Section {
 public:
-  Section(const SectionRecord & section);
+  Section(const small_world::io::Section & section);
   virtual ~Section();
 
   void simulate_section(Simulation & simulation);

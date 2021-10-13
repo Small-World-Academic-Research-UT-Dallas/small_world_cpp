@@ -1,7 +1,4 @@
 add_library(small_world_simulation_lib OBJECT
-src/SectionRecord.cpp
-src/StudentRecord.cpp
-src/EnrollmentData.cpp
 src/Student.cpp
 src/Section.cpp
 src/Simulation.cpp)

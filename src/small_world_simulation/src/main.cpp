@@ -5,7 +5,6 @@
 
 #include "small_world_io/CsvEnrollmentDataReader.hpp"
 #include "small_world_io/JsonParameterReader.hpp"
-#include "small_world_simulation/EnrollmentData.hpp"
 #include "small_world_simulation/Simulation.hpp"
 
 int main(int argc, char ** argv) {
@@ -51,4 +50,5 @@ int main(int argc, char ** argv) {
   }
   std::unique_ptr<small_world::io::CsvEnrollmentDataReader> enrollment_data =
     std::make_unique<small_world::io::CsvEnrollmentDataReader>(data_file);
+
 }

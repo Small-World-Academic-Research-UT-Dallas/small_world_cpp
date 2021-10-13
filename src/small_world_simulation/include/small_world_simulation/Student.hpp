@@ -8,7 +8,7 @@ Represents a single student for the purpose of simulation
 
 */
 
-#include "small_world_simulation/StudentRecord.hpp"
+#include "small_world_io/Student.hpp"
 
 namespace small_world::simulation {
 
@@ -20,7 +20,7 @@ public:
     Immune,
   };
 
-  Student(const StudentRecord & student); // Construct from a record
+  Student(const small_world::io::Student & student);
   virtual ~Student();
 
 private:

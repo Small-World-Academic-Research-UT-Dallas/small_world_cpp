@@ -1,9 +1,9 @@
-#include "small_world_simulation/StudentRecord.hpp"
 #include "small_world_simulation/Student.hpp"
+#include "small_world_io/Student.hpp"
 
 using namespace small_world::simulation;
 
-Student::Student(const StudentRecord & student) {
+Student::Student(const small_world::io::Student & student) {
   (void) student; // There is nothing currently in this record that we need
   this->viral_load = 0;
   this->status = infection_status::Uninfected;
