@@ -2,8 +2,6 @@
 
 namespace small_world::simulation { class Simulation; }
 
-#include <cstddef>
-#include <memory>
 #include <vector>
 
 #include "small_world_io/EnrollmentDataReader.hpp"
@@ -20,7 +18,8 @@ public:
   virtual ~Simulation();
 
 private:
-
+  std::vector<Section> sections;
+  std::vector<Student> students;
 };
 
 }
