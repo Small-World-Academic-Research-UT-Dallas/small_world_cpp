@@ -5,7 +5,7 @@
 
 using small_world::io::JsonParameterReader;
 
-JsonParameterReader::JsonParameterReader(std::unique_ptr<std::istream> input) {
+JsonParameterReader::JsonParameterReader(std::istream & input) {
 
 }
 
