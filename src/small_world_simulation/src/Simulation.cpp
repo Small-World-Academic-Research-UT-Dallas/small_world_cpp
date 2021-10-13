@@ -25,3 +25,11 @@ Simulation::Simulation(const small_world::io::EnrollmentDataReader & data,
 }
 
 Simulation::~Simulation() {}
+
+const Student & Simulation::observe_student(std::size_t student) const {
+  return this->students.at(student);
+}
+
+void Simulation::infect_student(std::size_t student, float amount) {
+  this->students.at(student).infect(amount);
+}

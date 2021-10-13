@@ -10,6 +10,6 @@ Section::Section(const small_world::io::Section & section) {
 
 Section::~Section() {}
 
-void Section::simulate_section(Simulation & simulation) {
-
+void Section::simulate_section(StudentPopulation & simulation) {
+ // TODO
 }

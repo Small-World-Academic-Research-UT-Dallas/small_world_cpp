@@ -13,3 +13,7 @@ Student::Student(const small_world::io::Student & student) {
 Student::~Student() {
   // Nothing here for now
 }
+
+void Student::infect(float amount) {
+  this->viral_load += amount;
+}

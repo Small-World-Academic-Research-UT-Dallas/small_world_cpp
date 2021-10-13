@@ -23,6 +23,8 @@ public:
   Student(const small_world::io::Student & student);
   virtual ~Student();
 
+  void infect(float amount);
+
 private:
   float viral_load;
   infection_status status;
