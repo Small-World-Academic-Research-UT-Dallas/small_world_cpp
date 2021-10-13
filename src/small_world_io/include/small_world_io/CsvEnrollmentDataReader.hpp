@@ -10,7 +10,7 @@
 
 namespace small_world::io {
 
-class CsvEnrollmentDataReader : EnrollmentDataReader {
+class CsvEnrollmentDataReader : public EnrollmentDataReader {
 public:
   CsvEnrollmentDataReader(std::istream & input);
   virtual ~CsvEnrollmentDataReader();

@@ -3,7 +3,8 @@
 
 using namespace small_world::simulation;
 
-Simulation::Simulation(const small_world::io::EnrollmentDataReader & data) {
+Simulation::Simulation(const small_world::io::EnrollmentDataReader & data,
+                       const small_world::io::ParameterReader & parameters) {
 
 }
 

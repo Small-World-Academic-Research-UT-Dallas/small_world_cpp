@@ -15,7 +15,7 @@ for its input.
 
 namespace small_world::io {
 
-class JsonParameterReader : ParameterReader {
+class JsonParameterReader : public ParameterReader {
 public:
   JsonParameterReader(std::istream & input);
   virtual ~JsonParameterReader();

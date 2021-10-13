@@ -41,14 +41,24 @@ int main(int argc, char ** argv) {
   }
 
   // Open and parse the data file
-  std::string data_filename = options_map["data"].as<std::string>();
+  const std::string data_filename = options_map["data"].as<std::string>();
   std::ifstream data_file(data_filename);
   if(! data_file) {
     std::cerr << "Error: Could not open data file '" << data_filename << "'"
       << std::endl;
     return 1;
   }
-  std::unique_ptr<small_world::io::CsvEnrollmentDataReader> enrollment_data =
-    std::make_unique<small_world::io::CsvEnrollmentDataReader>(data_file);
+  small_world::io::CsvEnrollmentDataReader enrollment_data(data_file);
 
+  // Open and parse the parameter file
+  const std::string parameter_filename = options_map["parameters"].as<std::string>();
+  std::ifstream parameter_file(parameter_filename);
+  if(! parameter_file) {
+    std::cerr << "Error: Could not open parameter file '" << parameter_filename
+      << "'" << std::endl;
+    return 1;
+  }
+  small_world::io::JsonParameterReader parameters(parameter_file);
+
+  small_world::simulation::Simulation simulation(enrollment_data, parameters);
 }
