@@ -12,10 +12,6 @@ Student::Student(const small_world::io::Student & student, std::shared_ptr<const
   this->infection_timer = 0;
 }
 
-Student::~Student() {
-  // Nothing here for now
-}
-
 void Student::infect(double amount) {
   this->viral_load += amount;
 }

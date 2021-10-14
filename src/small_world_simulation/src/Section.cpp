@@ -15,9 +15,7 @@ Section::Section(const small_world::io::Section & section, std::shared_ptr<const
   this->students = section.get_students();
 }
 
-Section::~Section() {}
-
-void Section::simulate_section(StudentPopulation & population) {
+void Section::simulate_section(StudentPopulation & population) const {
   (void) parameters; // There are currently no parameters that affect Sections
   double total_viral_load = std::accumulate(this->students->begin(), this->students->end(), 0.0,
     [&population](const std::size_t student_index, double current) -> double {
