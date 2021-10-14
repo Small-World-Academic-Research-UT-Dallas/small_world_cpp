@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "small_world_simulation/Simulation.hpp"
+#include "small_world_simulation/Student.hpp"
+#include "small_world_simulation/Section.hpp"
 #include "small_world_io/EnrollmentDataReader.hpp"
 #include "small_world_io/ParameterReader.hpp"
 
@@ -28,6 +30,9 @@ Simulation::Simulation(const small_world::io::EnrollmentDataReader & data,
       return Section(section, parameters);
     }
   );
+
+  // Infect student 0
+  this->students.at(0).force_infection();
 }
 
 const Student & Simulation::observe_student(std::size_t student) const {
@@ -36,4 +41,25 @@ const Student & Simulation::observe_student(std::size_t student) const {
 
 void Simulation::infect_student(std::size_t student, float amount) {
   this->students.at(student).infect(amount);
+}
+
+void Simulation::run(int steps) {
+  while(steps > 0) {
+    steps--;
+    this->run_one_step();
+  }
+}
+
+void Simulation::run_one_step() {
+  std::for_each(this->sections.begin(), this->sections.end(),
+    [this](Section & section) {
+      section.simulate_section(*this);
+    }
+  );
+
+  std::for_each(this->students.begin(), this->students.end(),
+    [this](Student & student) {
+      student.simulate_night();
+    }
+  );
 }

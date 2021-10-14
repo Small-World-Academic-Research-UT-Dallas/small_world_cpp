@@ -1,4 +1,5 @@
 #include <boost/program_options.hpp>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -62,4 +63,7 @@ int main(int argc, char ** argv) {
   small_world::io::JsonParameterReader parameter_reader(parameter_file);
   auto parameters = std::make_shared<const small_world::simulation::SimulationParameters>(parameter_reader);
   small_world::simulation::Simulation simulation(enrollment_data, parameters);
+
+  srand(time(NULL));
+  simulation.run(20);
 }

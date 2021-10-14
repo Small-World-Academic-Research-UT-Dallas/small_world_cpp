@@ -21,6 +21,9 @@ public:
   Simulation(const small_world::io::EnrollmentDataReader & data,
              std::shared_ptr<const small_world::simulation::SimulationParameters> parameters);
 
+  void run(int steps); // Run a number of steps in the simulation
+  void run_one_step(); // Run a single step
+
   // These methods exist to implement StudentPopulation, which is the interface
   // used by Sections during simulation to access this class
   const Student & observe_student(std::size_t student) const;

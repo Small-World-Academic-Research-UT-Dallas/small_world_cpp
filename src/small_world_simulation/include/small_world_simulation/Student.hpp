@@ -19,11 +19,10 @@ public:
   Student(const small_world::io::Student & student, std::shared_ptr<
     const small_world::simulation::SimulationParameters> parameters);
 
-  // Signals exposure to an infected individual
-  void infect(double amount);
-
-  // How contagious is this student (if at all)?
-  double get_contagiousness() const;
+  void infect(double amount); // Signals exposure to an infected individual
+  double get_contagiousness() const; // How contagious is this student (if at all)?
+  void simulate_night(); // Decide whether we were infected and reset
+  void force_infection(); // Forces this student to become infected
 
 private:
   double viral_load; // Viral load accumulated throughout the day
