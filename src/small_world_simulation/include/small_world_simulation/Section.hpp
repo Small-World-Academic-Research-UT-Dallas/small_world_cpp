@@ -22,7 +22,7 @@ public:
   Section(const small_world::io::Section & section);
   virtual ~Section();
 
-  void simulate_section(StudentPopulation & simulation);
+  void simulate_section(StudentPopulation & population);
 
 private:
   std::shared_ptr<const std::vector<std::size_t>> students;

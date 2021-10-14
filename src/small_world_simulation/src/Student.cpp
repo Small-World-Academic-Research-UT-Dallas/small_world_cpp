@@ -14,6 +14,10 @@ Student::~Student() {
   // Nothing here for now
 }
 
-void Student::infect(float amount) {
+void Student::infect(double amount) {
   this->viral_load += amount;
+}
+
+double Student::get_contagiousness() const {
+  return (this->status == infection_status::Infected) ? 1.0 : 0.0;
 }

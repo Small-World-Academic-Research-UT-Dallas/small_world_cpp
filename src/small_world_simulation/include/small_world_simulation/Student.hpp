@@ -23,10 +23,11 @@ public:
   Student(const small_world::io::Student & student);
   virtual ~Student();
 
-  void infect(float amount);
+  void infect(double amount);
+  double get_contagiousness() const;
 
 private:
-  float viral_load;
+  double viral_load;
   infection_status status;
   int infection_timer;
 };
