@@ -6,6 +6,7 @@
 #include "small_world_io/CsvEnrollmentDataReader.hpp"
 #include "small_world_io/JsonParameterReader.hpp"
 #include "small_world_simulation/Simulation.hpp"
+#include "small_world_simulation/SimulationParameters.hpp"
 
 int main(int argc, char ** argv) {
   // Create and parse options map
@@ -58,7 +59,7 @@ int main(int argc, char ** argv) {
       << "'" << std::endl;
     return 1;
   }
-  small_world::io::JsonParameterReader parameters(parameter_file);
-
+  small_world::io::JsonParameterReader parameter_reader(parameter_file);
+  auto parameters = std::make_shared<const small_world::simulation::SimulationParameters>(parameter_reader);
   small_world::simulation::Simulation simulation(enrollment_data, parameters);
 }

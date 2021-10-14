@@ -1,7 +1,8 @@
 add_library(small_world_simulation_lib OBJECT
 src/Student.cpp
 src/Section.cpp
-src/Simulation.cpp)
+src/Simulation.cpp
+src/SimulationParameters.cpp)
 
 target_include_directories(small_world_simulation_lib PUBLIC include)
 target_link_libraries(small_world_simulation_lib small_world_io)

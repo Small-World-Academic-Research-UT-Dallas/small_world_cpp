@@ -13,6 +13,6 @@ JsonParameterReader::~JsonParameterReader() {
 
 }
 
-double JsonParameterReader::get_double(std::string name) {
+double JsonParameterReader::get_double(std::string name) const {
   return 0; // TODO
 }

@@ -19,7 +19,7 @@ class JsonParameterReader : public ParameterReader {
 public:
   JsonParameterReader(std::istream & input);
   virtual ~JsonParameterReader();
-  virtual double get_double(std::string name); // Get a paramter as a double
+  virtual double get_double(std::string name) const; // Get a paramter as a double
 };
 
 }
