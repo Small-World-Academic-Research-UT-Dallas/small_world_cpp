@@ -15,11 +15,11 @@ for its input.
 
 namespace small_world::io {
 
-class JsonParameterReader : ParameterReader {
+class JsonParameterReader : public ParameterReader {
 public:
-  JsonParameterReader(std::unique_ptr<std::istream> input);
+  JsonParameterReader(std::istream & input);
   virtual ~JsonParameterReader();
-  virtual double get_double(std::string name); // Get a paramter as a double
+  virtual double get_double(std::string name) const; // Get a paramter as a double
 };
 
 }

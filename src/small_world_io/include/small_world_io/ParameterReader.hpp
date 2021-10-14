@@ -22,7 +22,7 @@ namespace small_world::io {
 class ParameterReader {
 public:
   virtual ~ParameterReader() {}; // Make it extendable
-  virtual double get_double(std::string name) = 0; // Get a paramter as a double
+  virtual double get_double(std::string name) const = 0; // Get a paramter as a double
 };
 
 }

@@ -10,9 +10,9 @@
 
 namespace small_world::io {
 
-class CsvEnrollmentDataReader : EnrollmentDataReader {
+class CsvEnrollmentDataReader : public EnrollmentDataReader {
 public:
-  CsvEnrollmentDataReader(std::istream input);
+  CsvEnrollmentDataReader(std::istream & input);
   virtual ~CsvEnrollmentDataReader();
   virtual std::shared_ptr<const std::vector<Student>> get_students() const;
   virtual std::shared_ptr<const std::vector<Section>> get_sections() const;
