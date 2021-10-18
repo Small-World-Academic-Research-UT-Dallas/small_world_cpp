@@ -20,26 +20,12 @@ using small_world::io::CsvEnrollmentDataReader;
 CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::ifstream &input) {
   std::cout << "Reading input file..." << std::endl;
   
-  std::vector<int> numsr = std::vector<int>();
   std::vector<Student> mstudents = std::vector<Student>(); // each student's sections
   std::vector<Section> msections = std::vector<Section>(); // each section's students
   std::map<int, std::vector<int>> dictKnownSections = std::map<int, std::vector<int>> (); // (crse nbr, list of students)
-  std::shared_ptr<const std::vector<Student>> x = std::make_shared<std::vector<small_world::io::Student>>();
+  
   this->students = std::make_shared<std::vector<small_world::io::Student>>();
   this->sections = std::make_shared<std::vector<small_world::io::Section>>();
-
-  numsr.push_back(0);
-  
-  const std::shared_ptr<std::vector<std::size_t>> stu_sec = std::make_shared<std::vector<std::size_t>>(); 
-  stu_sec->push_back(0);
-  Student stu = Student(stu_sec);
-  mstudents.push_back(stu);
-  // this->students->push_back(stu); // does not work?
-
-  std::shared_ptr<std::vector<std::size_t>> sec_stu = std::make_shared<std::vector<std::size_t>>();
-  sec_stu->push_back(0);
-  Section sec = Section(sec_stu);
-  msections.push_back(sec);
 
   std::string line;
   int i = 0;
@@ -84,7 +70,7 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::ifstream &input) {
       if (dictKnownSections.find(atoi(arr[crsnbr])) != dictKnownSections.end()) {
         // section exists
         std::vector<int> secti = dictKnownSections.at(atoi(arr[crsnbr]));
-        secti.push_back(atoi(arr[0])); // add A - student ID
+        secti.push_back(atoi(arr[stuid])); // add A - student ID
       } else {
         // new section
         std::vector<int> secti = std::vector<int>();
@@ -97,7 +83,7 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::ifstream &input) {
       i++;
     }
     // ??
-    for (auto const& kv : dictKnownSections) {
+    for (auto const &kv : dictKnownSections) {
       int course = kv.first;
       std::vector<int> sts = kv.second;
       std::shared_ptr<std::vector<std::size_t>> currSect = std::make_shared<std::vector<std::size_t>>();
@@ -105,6 +91,11 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::ifstream &input) {
       Section secti = Section(currSect);
       msections.push_back(secti);
     }
+
+    const std::vector<Student> mstudents = mstudents;
+    const std::vector<Section> msections = msections;
+    this->sections = std::make_shared<const std::vector<Section>>(msections);
+    this->students = std::make_shared<const std::vector<Student>>(mstudents);
     
     std::cout << "\nDone" << std::endl;
     input.close();
