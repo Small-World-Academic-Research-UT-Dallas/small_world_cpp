@@ -3,6 +3,7 @@
 #include <memory>
 #include <istream>
 #include <string>
+#include <nlohmann/json.hpp>
 
 #include "small_world_io/ParameterReader.hpp"
 
@@ -20,6 +21,8 @@ public:
   JsonParameterReader(std::istream & input);
   virtual ~JsonParameterReader();
   virtual double get_double(std::string name) const; // Get a paramter as a double
+private:
+  nlohmann::json parameters;
 };
 
 }
