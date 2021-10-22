@@ -10,13 +10,17 @@ namespace small_world::io {
 
 class Section {
 public:
-  Section(std::shared_ptr<const std::vector<std::size_t>> students);
+  Section(std::shared_ptr<const std::vector<std::size_t>> students, double contact);
   virtual ~Section();
 
   virtual std::shared_ptr<const std::vector<std::size_t>> get_students() const final;
 
+  virtual double get_contact() const final;
+
 private:
   std::shared_ptr<const std::vector<std::size_t>> students;
+
+  double contact;
 };
 
 }

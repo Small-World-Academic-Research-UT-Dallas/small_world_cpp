@@ -1,2 +1,6 @@
+add_library(small_world_static_analysis_lib)
+target_include_directories(small_world_static_analysis_lib PUBLIC include)
+target_link_libraries(small_world_static_analysis_lib small_world_io)
+
 add_executable(small_world_static_analysis src/main.cpp)
-target_link_libraries(small_world_static_analysis small_world_io)
+target_link_libraries(small_world_static_analysis small_world_static_analysis_lib small_world_io)
