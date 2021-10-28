@@ -53,6 +53,7 @@ int main(int argc, char ** argv) {
   small_world::io::CsvEnrollmentDataReader enrollment_data(data_file);
 
   // Open and parse the parameter file
+  // Todo merge.
   // const std::string parameter_filename = options_map["parameters"].as<std::string>();
   // std::ifstream parameter_file(parameter_filename);
   // if(! parameter_file) {

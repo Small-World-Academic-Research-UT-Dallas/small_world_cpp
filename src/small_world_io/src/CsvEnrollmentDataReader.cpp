@@ -92,12 +92,14 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream & input) {
       msections.push_back(secti);
     }
 
-    const std::vector<Student> mstudents = mstudents;
-    const std::vector<Section> msections = msections;
+    std::cout << mstudents.size() << " students, " << msections.size() << " sections." << std::endl;
+    // removeme (bad_alloc)
+    // const std::vector<Student> mstudents = mstudents;
+    // const std::vector<Section> msections = msections;
     this->sections = std::make_shared<const std::vector<Section>>(msections);
     this->students = std::make_shared<const std::vector<Student>>(mstudents);
     
-    std::cout << "\nDone" << std::endl;
+    std::cout << "Done" << std::endl;
     // input.close();
   }
 }
