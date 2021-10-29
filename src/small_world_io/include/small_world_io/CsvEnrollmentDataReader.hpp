@@ -6,13 +6,13 @@
 #include <unordered_map>
 #include <vector>
 
-#include "small_world_io/EnrollmentDataReader.hpp"
-#include "small_world_io/Section.hpp"
-#include "small_world_io/Student.hpp"
+#include <small_world_io/EnrollmentDataReader.hpp>
+#include <small_world_io/Section.hpp>
+#include <small_world_io/Student.hpp>
 
 namespace small_world::io {
 
-class CsvEnrollmentDataReader : EnrollmentDataReader {
+class CsvEnrollmentDataReader : public EnrollmentDataReader {
 public:
   CsvEnrollmentDataReader(std::istream& input);
   virtual ~CsvEnrollmentDataReader();

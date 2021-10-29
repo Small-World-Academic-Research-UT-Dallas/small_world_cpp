@@ -126,6 +126,9 @@ const std::vector<std::string> SECTION_KEY_FIELDS {
 };
 
 CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream& input) {
+  // Useful for debugging, but substantially degrades performance
+  constexpr bool VERIFY_UNIQUENESS = false;
+
   std::vector<std::unordered_map<std::string, std::string>> data = parse_csv(input);
   std::cout << "Data read" << std::endl;
   std::size_t n = data.size();
@@ -163,19 +166,23 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream& input) {
   std::vector<bool> studentAdded(st, false), sectionAdded(se, false);
   for (std::size_t i = 0; i < n; i++) {
     std::size_t studentId = rowStudents[i], sectionId = rowSections[i];
-    small_world::io::Student student = make_student(data[i], studentAdj[studentId]);
-    small_world::io::Section section = make_section(data[i], sectionAdj[sectionId]);
-    if (studentAdded[studentId])
-      assert(student == students[rowStudents[i]]);
-    else {
+    if (!studentAdded[studentId]) {
+      small_world::io::Student student = make_student(data[i], studentAdj[studentId]);
       students.push_back(std::move(student));
       studentAdded[studentId] = true;
     }
-    if (sectionAdded[sectionId])
-      assert(section == sections[rowSections[i]]);
-    else {
+    else if (VERIFY_UNIQUENESS) {
+      small_world::io::Student student = make_student(data[i], studentAdj[studentId]);
+      assert(student == students[rowStudents[i]]);
+    }
+    if (!sectionAdded[sectionId]) {
+      small_world::io::Section section = make_section(data[i], sectionAdj[sectionId]);
       sections.push_back(make_section(data[i], sectionAdj[sectionId]));
       sectionAdded[sectionId] = true;
+    }
+    else if (VERIFY_UNIQUENESS) {
+      small_world::io::Section section = make_section(data[i], sectionAdj[sectionId]);
+      assert(section == sections[rowSections[i]]);
     }
   }
 
