@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <ctime>
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -41,6 +42,7 @@ public:
   };
 
   Section(std::shared_ptr<const std::vector<std::size_t>> students,
+          std::size_t strm,
           std::size_t number,
           std::size_t course_id,
           Session session,
@@ -71,6 +73,7 @@ public:
 
   virtual std::shared_ptr<const std::vector<std::size_t>> get_students() const final;
 
+  virtual std::size_t get_strm() const final;
   virtual std::size_t get_number() const final;
   virtual std::size_t get_course_id() const final;
   virtual Session get_session() const final;
@@ -100,6 +103,7 @@ public:
 private:
   std::shared_ptr<const std::vector<std::size_t>> students;
 
+  std::size_t strm;
   std::size_t number;
   std::size_t course_id;
   Session session;

@@ -27,7 +27,7 @@ public:
   };
 
   enum class Program : uint16_t {
-    GRAD, MASTR, CERT, UGRD, DOCT, UGRD2
+    CERT, DOCT, GRAD, MASTR, SPPRO, UCERT, UGNDS, UGRD, UGRD2
   };
 
   enum class Organization : uint16_t {
@@ -47,8 +47,8 @@ public:
   };
 
   Student(std::shared_ptr<const std::vector<std::size_t>> sections,
+          std::size_t strm,
           std::size_t unique_val,
-          std::size_t stream,
           Career career,
           Program program,
           Organization organization,
@@ -60,8 +60,8 @@ public:
 
   virtual std::shared_ptr<const std::vector<std::size_t>> get_sections() const final;
 
+  virtual std::size_t get_strm() const final;
   virtual std::size_t get_unique_val() const final;
-  virtual std::size_t get_stream() const final;
   virtual Career get_career() const final;
   virtual Program get_program() const final;
   virtual Organization get_organization() const final;
@@ -72,8 +72,8 @@ public:
 private:
   std::shared_ptr<const std::vector<std::size_t>> sections;
 
+  const std::size_t strm;
   const std::size_t unique_val;
-  const std::size_t stream;
   const Career career;
   const Program program;
   const Organization organization;

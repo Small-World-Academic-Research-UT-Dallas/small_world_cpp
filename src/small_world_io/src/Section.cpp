@@ -3,6 +3,7 @@
 using small_world::io::Section;
 
 Section::Section(std::shared_ptr<const std::vector<std::size_t>> students,
+                 std::size_t strm,
                  std::size_t number,
                  std::size_t course_id,
                  Session session,
@@ -29,6 +30,7 @@ Section::Section(std::shared_ptr<const std::vector<std::size_t>> students,
                  bool sunday,
                  Mode mode) :
   students(students),
+  strm(strm),
   number(number),
   course_id(course_id),
   session(session),
@@ -55,12 +57,15 @@ Section::Section(std::shared_ptr<const std::vector<std::size_t>> students,
   sunday(sunday),
   mode(mode)
 {}
-          
 
 Section::~Section() {}
 
 std::shared_ptr<const std::vector<std::size_t>> Section::get_students() const {
   return this->students;
+}
+
+std::size_t Section::get_strm() const {
+  return this->strm;
 }
 
 std::size_t Section::get_number() const {
@@ -165,6 +170,7 @@ Section::Mode Section::get_mode() const {
 
 bool operator==(const small_world::io::Section& l, const small_world::io::Section& r) {
   return *l.get_students() == *r.get_students() &&
+         l.get_strm() == r.get_strm() &&
          l.get_number() == r.get_number() &&
          l.get_course_id() == r.get_course_id() &&
          l.get_session() == r.get_session() &&

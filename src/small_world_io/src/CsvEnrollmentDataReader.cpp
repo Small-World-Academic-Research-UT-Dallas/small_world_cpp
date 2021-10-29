@@ -107,14 +107,19 @@ template<typename T>
 auto parse(const std::unordered_map<std::string, std::string>& row, const std::string& field) -> decltype(Parse<T>::parse(row.find(field)->second));
 
 const std::vector<std::string> STUDENT_KEY_FIELDS {
+  "STRM",
   "UNIQUE_VAL"
 };
 
 const std::vector<std::string> SECTION_KEY_FIELDS {
+  "STRM",
   "CLASS_NBR",
   "CRSE_ID",
   "SESSION_CODE",
   "FACILITY_ID",
+  "UNT_TAKEN",
+  "MTG_PAT_START_DT",
+  "MTG_PAT_END_DT",
   "MEETING_TIME_START",
   "MEETING_TIME_END",
   "MEETING_SCHEDULE"
@@ -122,6 +127,7 @@ const std::vector<std::string> SECTION_KEY_FIELDS {
 
 CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream& input) {
   std::vector<std::unordered_map<std::string, std::string>> data = parse_csv(input);
+  std::cout << "Data read" << std::endl;
   std::size_t n = data.size();
   
   // Identify repeated students and sections
@@ -146,6 +152,8 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream& input) {
   }
   std::size_t st = studentIds.size(), se = sectionIds.size();
 
+  std::cout << "Graph edges generated" << std::endl;
+
   // Construct Student and Section objects, ordered by first row 
   std::vector<small_world::io::Student> students;
   std::vector<small_world::io::Section> sections;
@@ -164,12 +172,14 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream& input) {
       studentAdded[studentId] = true;
     }
     if (sectionAdded[sectionId])
-      assert(section == sections[rowStudents[i]]);
+      assert(section == sections[rowSections[i]]);
     else {
       sections.push_back(make_section(data[i], sectionAdj[sectionId]));
       sectionAdded[sectionId] = true;
     }
   }
+
+  std::cout << "Student/Section objects generated" << std::endl;
 
   // Set shared_pointer fields
   this->students = std::make_shared<const std::vector<small_world::io::Student>>(std::move(students));
@@ -198,10 +208,9 @@ std::vector<std::unordered_map<std::string, std::string>> parse_csv(std::istream
   int rowNum = 0;
   while ((row = parse_row(input)), input) {
     if (PRINT_PROGRESS && ++rowNum % 1000 == 0)
-      std::cout << "\rrow " << std::setw(6) << rowNum << std::flush;
+      std::cout << "\rReading row " << std::setw(6) << rowNum << std::flush;
     // All rows should have the same number of commas
-    if (row.size() != header.size())
-      throw std::invalid_argument("Row has the wrong number of entries.");
+    assert(row.size() == header.size());
     // Add a new row
     parsed.emplace_back();
     parsed.back().reserve(row.size());
@@ -211,7 +220,7 @@ std::vector<std::unordered_map<std::string, std::string>> parse_csv(std::istream
   }
   // Clear output
   if (PRINT_PROGRESS)
-    std::cout << '\r' << std::string(10, ' ') << '\r' << std::flush;
+    std::cout << '\r' << std::string(18, ' ') << '\r' << std::flush;
   return parsed;
 }
 
@@ -243,8 +252,8 @@ small_world::io::Student make_student(const std::unordered_map<std::string, std:
   std::vector<std::size_t> adjVec(adj.begin(), adj.end());
   std::sort(adjVec.begin(), adjVec.end());
   return small_world::io::Student(std::make_shared<const std::vector<std::size_t>>(std::move(adjVec)),
-                                  parse<std::size_t>(row, "UNIQUE_VAL"),
                                   parse<std::size_t>(row, "STRM"),
+                                  parse<std::size_t>(row, "UNIQUE_VAL"),
                                   parse<small_world::io::Student::Career>(row, "ACAD_CAREER"),
                                   parse<small_world::io::Student::Program>(row, "ACAD_PROG"),
                                   parse<small_world::io::Student::Organization>(row, "ACAD_ORG"),
@@ -257,6 +266,7 @@ small_world::io::Section make_section(const std::unordered_map<std::string, std:
   std::vector<std::size_t> adjVec(adj.begin(), adj.end());
   std::sort(adjVec.begin(), adjVec.end());
   return small_world::io::Section(std::make_shared<const std::vector<std::size_t>>(std::move(adjVec)),
+                                  parse<std::size_t>(row, "STRM"),
                                   parse<std::size_t>(row, "CLASS_NBR"),
                                   parse<std::size_t>(row, "CRSE_ID"),
                                   parse<small_world::io::Section::Session>(row, "SESSION_CODE"),
@@ -322,11 +332,14 @@ small_world::io::Student::Career Parse<small_world::io::Student::Career>::parse(
 
 small_world::io::Student::Program Parse<small_world::io::Student::Program>::parse(const std::string& str) {
   static const std::unordered_map<std::string, small_world::io::Student::Program> MAP {
+    {"CERT", small_world::io::Student::Program::CERT},
+    {"DOCT", small_world::io::Student::Program::DOCT},
     {"GRAD", small_world::io::Student::Program::GRAD},
     {"MASTR", small_world::io::Student::Program::MASTR},
-    {"CERT", small_world::io::Student::Program::CERT},
+    {"SPPRO", small_world::io::Student::Program::SPPRO},
+    {"UCERT", small_world::io::Student::Program::UCERT},
+    {"UGNDS", small_world::io::Student::Program::UGNDS},
     {"UGRD", small_world::io::Student::Program::UGRD},
-    {"DOCT", small_world::io::Student::Program::DOCT},
     {"UGRD2", small_world::io::Student::Program::UGRD2}
   };
   auto it = MAP.find(str);
@@ -1000,7 +1013,7 @@ small_world::io::Section::Component Parse<small_world::io::Section::Component>::
 
 small_world::io::Section::Facility Parse<small_world::io::Section::Facility>::parse(const std::string& str) {
   static const std::unordered_map<std::string, small_world::io::Section::Facility> MAP {
-    {"", small_world::io::Section::Facility::NONE},
+    {" ", small_world::io::Section::Facility::NONE},
     {"AB 1.308", small_world::io::Section::Facility::AB_1_308},
     {"AB 1.318", small_world::io::Section::Facility::AB_1_318},
     {"AB 1.506", small_world::io::Section::Facility::AB_1_506},
@@ -1299,6 +1312,8 @@ time_t Parse<Date>::parse(const std::string& str) {
 
 // Parses a time in 24-hour hh:mm format
 time_t Parse<Time>::parse(const std::string& str) {
+  if (str.empty())
+    return 0;
   std::size_t pos = str.find(':');
   assert(pos != std::string::npos);
 

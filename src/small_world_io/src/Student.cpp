@@ -3,8 +3,8 @@
 using small_world::io::Student;
 
 Student::Student(std::shared_ptr<const std::vector<std::size_t>> sections,
+                 std::size_t strm,
                  std::size_t unique_val,
-                 std::size_t stream,
                  Career career,
                  Program program,
                  Organization organization,
@@ -12,8 +12,8 @@ Student::Student(std::shared_ptr<const std::vector<std::size_t>> sections,
                  Plan plan,
                  Subplan subplan) :
   sections(sections),
+  strm(strm),
   unique_val(unique_val),
-  stream(stream),
   career(career),
   program(program),
   organization(organization),
@@ -28,12 +28,12 @@ std::shared_ptr<const std::vector<std::size_t>> Student::get_sections() const {
   return this->sections;
 }
 
-std::size_t Student::get_unique_val() const {
-  return this->unique_val;
+std::size_t Student::get_strm() const {
+  return this->strm;
 }
 
-std::size_t Student::get_stream() const {
-  return this->stream;
+std::size_t Student::get_unique_val() const {
+  return this->unique_val;
 }
 
 Student::Career Student::get_career() const {
@@ -62,8 +62,8 @@ Student::Subplan Student::get_subplan() const {
 
 bool operator==(const small_world::io::Student& l, const small_world::io::Student& r) {
   return *l.get_sections() == *r.get_sections() &&
+         l.get_strm() == r.get_strm() &&
          l.get_unique_val() == r.get_unique_val() &&
-         l.get_stream() == r.get_stream() &&
          l.get_career() == r.get_career() &&
          l.get_program() == r.get_program() &&
          l.get_organization() == r.get_organization() &&
