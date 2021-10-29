@@ -1,2 +1,10 @@
 build
 bin
+CMakeFiles
+Makefile
+CMakeCache.txt
+cmake_install.cmake
+do-build
+*.csv
+*.tsv
+*.a

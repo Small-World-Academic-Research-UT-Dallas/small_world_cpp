@@ -15,6 +15,8 @@ int main() {
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
+    std::cout << "Hi!" << std::endl;
+
     small_world::io::CsvEnrollmentDataReader reader(std::cin);
     small_world::static_analysis::Graph<double> graph = small_world::static_analysis::student_to_student_weighted<double>(reader);
     std::cout << "Graph constructed" << std::endl;
