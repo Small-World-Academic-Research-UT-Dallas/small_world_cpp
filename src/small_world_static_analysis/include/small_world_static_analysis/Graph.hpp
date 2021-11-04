@@ -18,6 +18,8 @@ public:
   inline std::unordered_map<size_t, std::unordered_map<size_t, float_t>>& get_adj() { return adj; }
   inline const std::unordered_map<size_t, std::unordered_map<size_t, float_t>>& get_adj() const { return adj; }
 
+  inline size_t size() const { return adj.size(); }
+
   template<typename F>
   inline Graph subgraph(const F& filter = F{}) const;
 

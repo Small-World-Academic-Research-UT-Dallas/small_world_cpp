@@ -56,6 +56,8 @@ int main() {
   std::cout << "full_edge_count: " << metrics.full_edge_count << std::endl;
   std::cout << "comp_node_count: " << metrics.comp_node_count << std::endl;
   std::cout << "comp_edge_count: " << metrics.comp_edge_count << std::endl;
+  std::cout << "bcmp_node_count: " << metrics.bcmp_node_count << std::endl;
+  std::cout << "bcmp_edge_count: " << metrics.bcmp_edge_count << std::endl;
   std::cout << "average_degree: " << metrics.average_degree << std::endl;
   std::cout << "c_node_percent: " << metrics.c_node_percent << std::endl;
   std::cout << "average_weight: " << metrics.average_weight << std::endl;
