@@ -6,6 +6,7 @@
 
 #include <small_world_static_analysis/Biconnectivity.hpp>
 #include <small_world_static_analysis/Connectivity.hpp>
+#include <small_world_static_analysis/Filters.hpp>
 #include <small_world_static_analysis/Graph.hpp>
 
 namespace small_world::static_analysis {
@@ -20,14 +21,14 @@ struct GraphMetrics {
   size_t bcmp_edge_count = 0;
   float_t average_degree = 0;
   float_t c_node_percent = 0;
-  float_t average_weight = 0;
+  float_t avg_inv_weight = 0;
 };
 
 template<typename float_t>
 GraphMetrics<float_t> compute_metrics(const Graph<float_t>& g) {
   size_t n = g.get_adj().size();
 
-  GraphMetrics<float_t> metrics{};
+  GraphMetrics<float_t> metrics;
 
   metrics.full_node_count = n;
 
@@ -39,16 +40,9 @@ GraphMetrics<float_t> compute_metrics(const Graph<float_t>& g) {
     return l.size() < r.size();
   };
 
-  struct SetFilter {
-    const std::unordered_set<size_t>& S;
-    inline bool operator()(size_t v) const noexcept {
-      return S.contains(v);
-    }
-  };
-
   Components comps = components(g);
   size_t maxCompIdx = std::max_element(comps.compToVerts.begin(), comps.compToVerts.end(), cmpSize) - comps.compToVerts.begin();
-  Graph c = g.subgraph(SetFilter{comps.compToVerts[maxCompIdx]});
+  const Graph<float_t>& c = comps.comps[maxCompIdx];
 
   metrics.comp_node_count = c.get_adj().size();
 
@@ -58,7 +52,8 @@ GraphMetrics<float_t> compute_metrics(const Graph<float_t>& g) {
 
   Bicomponents bicomps = bicomponents(c);
   size_t maxBicompIdx = std::max_element(bicomps.bicompToVerts.begin(), bicomps.bicompToVerts.end(), cmpSize) - bicomps.bicompToVerts.begin();
-  Graph bc = g.subgraph(SetFilter{bicomps.bicompToVerts[maxBicompIdx]});
+  const Graph<float_t>& bc = bicomps.bicomps[maxBicompIdx];
+  //Graph bc = c.subgraph(index_filters::Set(bicomps.bicompToVerts[maxBicompIdx]));
 
   metrics.bcmp_node_count = bc.get_adj().size();
 
@@ -72,8 +67,8 @@ GraphMetrics<float_t> compute_metrics(const Graph<float_t>& g) {
 
   for (const auto& [u, uAdj] : c.get_adj())
     for (const auto& [v, weight] : uAdj)
-      metrics.average_weight += weight;
-  metrics.average_weight /= 2 * metrics.comp_edge_count;
+      metrics.avg_inv_weight += 1 / weight;
+  metrics.avg_inv_weight /= 2 * metrics.comp_edge_count;
 
   return metrics;
 }

@@ -10,14 +10,16 @@
 
 namespace small_world::static_analysis {
 
+template<typename float_t>
 struct Bicomponents {
   std::unordered_map<size_t, std::unordered_set<size_t>> vertToBicomps;
   std::vector<std::unordered_set<size_t>> bicompToVerts;
+  std::vector<Graph<float_t>> bicomps;
 };
 
 // Tarjan's Biconnected Component Algorithm
 template<typename float_t>
-inline Bicomponents bicomponents(const Graph<float_t>& g) {
+inline Bicomponents<float_t> bicomponents(const Graph<float_t>& g) {
   const std::unordered_map<size_t, std::unordered_map<size_t, float_t>>& adj = g.get_adj();
 
   struct Helper {
@@ -25,6 +27,7 @@ inline Bicomponents bicomponents(const Graph<float_t>& g) {
 
     std::unordered_map<size_t, std::unordered_set<size_t>> vertToBicomps;
     std::vector<std::unordered_set<size_t>> bicompToVerts;
+    std::vector<Graph<float_t>> bicomps;
 
     std::vector<std::pair<size_t, size_t>> edges;
     std::unordered_map<size_t, size_t> num, lowpt;
@@ -58,6 +61,7 @@ inline Bicomponents bicomponents(const Graph<float_t>& g) {
             bicomp.insert(w);
             vertToBicomps[v].insert(bicompToVerts.size());
             vertToBicomps[w].insert(bicompToVerts.size());
+            bicomps.push_back(g.subgraph(bicomp));
             bicompToVerts.push_back(std::move(bicomp));
           }
         }
@@ -77,7 +81,7 @@ inline Bicomponents bicomponents(const Graph<float_t>& g) {
     else if (helper.num.find(v) == helper.num.end())
       helper.biconnect(0, v);
 
-  return { std::move(helper.vertToBicomps), std::move(helper.bicompToVerts) };
+  return Bicomponents<float_t>{ std::move(helper.vertToBicomps), std::move(helper.bicompToVerts), std::move(helper.bicomps) };
 }
 
 }

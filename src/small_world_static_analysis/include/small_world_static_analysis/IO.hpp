@@ -10,12 +10,12 @@
 #include <small_world_io/Section.hpp>
 #include <small_world_io/Student.hpp>
 
-#include <small_world_static_analysis/Functional.hpp>
+#include <small_world_static_analysis/Filters.hpp>
 #include <small_world_static_analysis/Graph.hpp>
 
 namespace small_world::static_analysis {
 
-template<typename float_t, typename StF = ConstFilter<true>, typename SeF = ConstFilter<true>>
+template<typename float_t, typename StF = io_filters::Const<true>, typename SeF = io_filters::Const<true>>
 Graph<float_t> student_to_student_weighted(const io::EnrollmentDataReader& data, const StF& stFilter = StF{}, const SeF& seFilter = SeF{}) {
   Graph<float_t> graph;
 

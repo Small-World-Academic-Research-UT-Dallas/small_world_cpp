@@ -1326,11 +1326,11 @@ time_t Parse<Time>::parse(const std::string& str) {
 
   tm time;
   time.tm_sec = 0;
-  time.tm_min = ::parse<int>(str.substr(0, pos));
-  time.tm_hour = ::parse<int>(str.substr(pos + 1));
+  time.tm_min = ::parse<int>(str.substr(pos + 1));
+  time.tm_hour = ::parse<int>(str.substr(0, pos));
   time.tm_mday = 1;
   time.tm_mon = 0;
-  time.tm_year = 0;
+  time.tm_year = 70;
   // tm_wday and tm_yday are ignored by mktime
   time.tm_isdst = -1;
   return mktime(&time);

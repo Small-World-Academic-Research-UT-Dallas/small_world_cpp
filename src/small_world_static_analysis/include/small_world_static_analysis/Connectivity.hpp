@@ -10,17 +10,20 @@
 
 namespace small_world::static_analysis {
 
+template<typename float_t>
 struct Components {
   std::unordered_map<size_t, size_t> vertToComp;
   std::vector<std::unordered_set<size_t>> compToVerts;
+  std::vector<Graph<float_t>> comps;
 };
 
 template<typename float_t>
-inline Components components(const Graph<float_t>& g) {
+inline Components<float_t> components(const Graph<float_t>& g) {
   const std::unordered_map<size_t, std::unordered_map<size_t, float_t>>& adj = g.get_adj();
 
   std::unordered_map<size_t, size_t> vertToComp;
   std::vector<std::unordered_set<size_t>> compToVerts;
+  std::vector<Graph<float_t>> comps;
   
   std::unordered_set<size_t> curComp;
   std::vector<size_t> stack;
@@ -41,10 +44,11 @@ inline Components components(const Graph<float_t>& g) {
     }
     for (size_t v : curComp)
       vertToComp[v] = compToVerts.size();
+    comps.push_back(g.subgraph(curComp));
     compToVerts.push_back(std::move(curComp));
   }
 
-  return {std::move(vertToComp), std::move(compToVerts)};
+  return { std::move(vertToComp), std::move(compToVerts), std::move(comps) };
 }
 
 }
