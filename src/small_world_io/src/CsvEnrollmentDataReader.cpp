@@ -236,6 +236,8 @@ std::vector<std::unordered_map<std::string, std::string>> parse_csv(std::istream
 std::vector<std::string> parse_row(std::istream& input) {
   std::string line;
   std::getline(input, line);
+  if (line.back() == '\r')
+    line.pop_back();
 
   std::vector<std::string> row;
   size_t i = 0, j = line.find(',', 0);
@@ -308,6 +310,8 @@ small_world::io::Section make_section(const std::unordered_map<std::string, std:
 template<typename T>
 auto parse(const std::unordered_map<std::string, std::string>& row, const std::string& field) -> decltype(Parse<T>::parse(row.find(field)->second)) {
   auto it = row.find(field);
+  if (it == row.end())
+    std::cerr << "ERROR: field " << field << " not found." << std::endl;
   assert(it != row.end());
   return Parse<T>::parse(it->second);
 }
