@@ -1,5 +1,6 @@
-#include <exception>
+#include <chrono>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -12,7 +13,10 @@
 #include <small_world_static_analysis/IO.hpp>
 
 int main() {
+
   using namespace small_world;
+
+  auto start = std::chrono::high_resolution_clock::now();
 
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(nullptr);
@@ -52,6 +56,11 @@ int main() {
   static_analysis::Graph<double> g = static_analysis::student_to_student_weighted<double, decltype(stFilter), decltype(seFilter)>(data, stFilter, seFilter);
 
   static_analysis::GraphMetrics<double> metrics = compute_metrics(g);
+
+  auto end = std::chrono::high_resolution_clock::now();
+  long long int time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+  std::cout << "Time: " << std::setw(4) << time / 1000 << "s " << std::setw(3) << time % 1000 << "ms" << std::endl;
+
   std::cout << "full_node_count: " << metrics.full_node_count << std::endl;
   std::cout << "full_edge_count: " << metrics.full_edge_count << std::endl;
   std::cout << "comp_node_count: " << metrics.comp_node_count << std::endl;
@@ -61,4 +70,5 @@ int main() {
   std::cout << "average_degree: " << metrics.average_degree << std::endl;
   std::cout << "c_node_percent: " << metrics.c_node_percent << std::endl;
   std::cout << "avg_inv_weight: " << metrics.avg_inv_weight << std::endl;
+  std::cout << "comp_diam_unwtd: " << metrics.comp_diam_unwtd << std::endl;
 }

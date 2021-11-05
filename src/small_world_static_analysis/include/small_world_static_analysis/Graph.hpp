@@ -5,10 +5,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include <small_world_io/CsvEnrollmentDataReader.hpp>
-#include <small_world_io/Section.hpp>
-#include <small_world_io/Student.hpp>
-
 namespace small_world::static_analysis {
 
 template<typename float_t>

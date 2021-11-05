@@ -215,7 +215,7 @@ std::vector<std::unordered_map<std::string, std::string>> parse_csv(std::istream
   int rowNum = 0;
   while ((row = parse_row(input)), input) {
     if (PRINT_PROGRESS && ++rowNum % 1000 == 0)
-      std::cout << "\rReading row " << std::setw(6) << rowNum << std::flush;
+      std::cout << "\rReading line " << std::setw(6) << rowNum << std::flush;
     // All rows should have the same number of commas
     assert(row.size() == header.size());
     // Add a new row
@@ -227,7 +227,7 @@ std::vector<std::unordered_map<std::string, std::string>> parse_csv(std::istream
   }
   // Clear output
   if (PRINT_PROGRESS)
-    std::cout << '\r' << std::string(18, ' ') << '\r' << std::flush;
+    std::cout << '\r' << std::string(19, ' ') << '\r' << std::flush;
   return parsed;
 }
 
