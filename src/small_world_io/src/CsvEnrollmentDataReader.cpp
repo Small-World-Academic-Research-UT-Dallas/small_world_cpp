@@ -15,6 +15,8 @@
 #include "small_world_io/Section.hpp"
 #include "small_world_io/Student.hpp"
 
+// TODO add support for old file format
+
 using small_world::io::CsvEnrollmentDataReader;
 
 std::vector<std::unordered_map<std::string, std::string>> parse_csv(std::istream& input);
@@ -244,6 +246,8 @@ std::vector<std::string> parse_row(std::istream& input) {
     i = j + 1;
     j = line.find(',', i);
   }
+  row.emplace_back(line.begin() + i, line.end());
+  std::replace(row.back().begin(), row.back().end(), '@', ',');
   return row;
 }
 
