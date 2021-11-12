@@ -11,3 +11,7 @@ Student::~Student() {}
 std::shared_ptr<const std::vector<std::size_t>> Student::get_sections() const {
   return this->sections;
 }
+
+void Student::show() const {
+  printf("student example\n");
+}

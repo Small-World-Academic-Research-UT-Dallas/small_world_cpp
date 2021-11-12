@@ -54,17 +54,17 @@ int main(int argc, char ** argv) {
 
   // Open and parse the parameter file
   // Todo merge.
-  // const std::string parameter_filename = options_map["parameters"].as<std::string>();
-  // std::ifstream parameter_file(parameter_filename);
-  // if(! parameter_file) {
-  //   std::cerr << "Error: Could not open parameter file '" << parameter_filename
-  //     << "'" << std::endl;
-  //   return 1;
-  // }
-  // small_world::io::JsonParameterReader parameter_reader(parameter_file);
-  // auto parameters = std::make_shared<const small_world::simulation::SimulationParameters>(parameter_reader);
-  // small_world::simulation::Simulation simulation(enrollment_data, parameters);
+  const std::string parameter_filename = options_map["parameters"].as<std::string>();
+  std::ifstream parameter_file(parameter_filename);
+  if(! parameter_file) {
+    std::cerr << "Error: Could not open parameter file '" << parameter_filename
+      << "'" << std::endl;
+    return 1;
+  }
+  small_world::io::JsonParameterReader parameter_reader(parameter_file);
+  auto parameters = std::make_shared<const small_world::simulation::SimulationParameters>(parameter_reader);
+  small_world::simulation::Simulation simulation(enrollment_data, parameters);
 
-  // srand(time(NULL));
-  // simulation.run(20);
+  srand(time(NULL));
+  simulation.run(20);
 }

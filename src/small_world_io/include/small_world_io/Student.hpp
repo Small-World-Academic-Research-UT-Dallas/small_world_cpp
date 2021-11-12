@@ -25,6 +25,7 @@ public:
   virtual ~Student();
 
   virtual std::shared_ptr<const std::vector<std::size_t>> get_sections() const final;
+  void show() const;
 
 private:
   std::shared_ptr<const std::vector<std::size_t>> sections;

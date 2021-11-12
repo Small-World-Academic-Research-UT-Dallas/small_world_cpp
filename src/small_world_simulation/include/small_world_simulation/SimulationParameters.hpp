@@ -12,6 +12,7 @@ class SimulationParameters final {
 public:
   SimulationParameters(const small_world::io::ParameterReader & parameters);
   double get_r_value() const;
+  void show() const;
 
 private:
   double r_value;
