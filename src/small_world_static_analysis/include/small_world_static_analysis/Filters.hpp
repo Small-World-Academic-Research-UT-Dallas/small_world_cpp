@@ -14,11 +14,11 @@ namespace io_filters {
 
 template<bool C>
 struct Const {
-  inline constexpr bool operator()(const small_world::io::Student& student) const noexcept {
+  inline constexpr bool operator()(const small_world::io::Student&) const noexcept {
     return C;
   }
 
-  inline constexpr bool operator()(const small_world::io::Section& section) const noexcept {
+  inline constexpr bool operator()(const small_world::io::Section&) const noexcept {
     return C;
   }
 };

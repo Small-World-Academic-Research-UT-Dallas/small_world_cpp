@@ -55,4 +55,38 @@ inline CGraph<float_t> index_compress(const Graph<float_t>& g, std::vector<size_
   return cg;
 }
 
+template<typename float_t>
+inline Graph<float_t> structural_compress(const Graph<float_t>& g, std::unordered_map<size_t, std::unordered_set<size_t>>& toOriginal, std::unordered_map<size_t, size_t>& toCompressed) {
+  struct Hasher {
+      const std::hash<size_t> idxHash;
+      const std::hash<float_t> wtHash;
+    inline size_t operator()(const std::unordered_map<size_t, float_t> map) const noexcept {
+      std::vector<std::pair<size_t, float_t>> vec(map.begin(), map.end());
+      std::sort(vec.begin(), vec.end());
+      // The adjacency list is now in a unique order and has unique elements, so hashes are consistent.
+      size_t hash = 0;
+      for (const auto& [idx, wt] : vec)
+        hash = 31 * (31 * hash + idxHash(idx)) + wtHash(wt);
+      return hash;
+    }
+  };
+
+  std::unordered_map<std::unordered_map<size_t, float_t>, size_t, Hasher> adjToClass;
+
+  toOriginal.clear();
+  toCompressed.clear();
+
+  for (const auto& [v, vAdj] : g.get_adj()) {
+    // Add a new equivalence class represented by v iff vAdj is new.
+    auto ins = adjToClass.try_emplace(vAdj, v);
+    // Equivalence class representative
+    size_t u = ins.first->second;
+    toOriginal[u].insert(v);
+    toCompressed[v] = u;
+  }
+
+  // Return quotient graph containing only representative vertices
+  return g.subgraph([&](size_t v) { return toCompressed[v] == v; });
+}
+
 }
