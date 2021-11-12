@@ -2,7 +2,7 @@ build
 bin
 CMakeFiles
 Makefile
-*.json
+.vscode
 CMakeCache.txt
 cmake_install.cmake
 do-build
