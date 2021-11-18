@@ -21,6 +21,7 @@ public:
 
   void infect(double amount); // Signals exposure to an infected individual
   double get_contagiousness() const; // How contagious is this student (if at all)?
+  double get_viral_load();
   void simulate_night(); // Decide whether we were infected and reset
   void force_infection(); // Forces this student to become infected
 

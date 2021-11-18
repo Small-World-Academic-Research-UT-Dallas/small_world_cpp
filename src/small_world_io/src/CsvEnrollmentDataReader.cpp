@@ -13,7 +13,7 @@
 #include "string.h"
 #define len 2048 // 48
 #define stuid 0
-#define crsnbr 13 
+#define crsnbr 15 
 
 using small_world::io::CsvEnrollmentDataReader;
 
@@ -34,7 +34,7 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream & input) {
   if (input) {
     while (std::getline(input, line)) {
       // process line
-      char *chrstr = const_cast<char*>(line.c_str());
+      // char *chrstr = const_cast<char*>(line.c_str());
       if (i <= 0) {
         i++;
         continue;
@@ -42,16 +42,14 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream & input) {
   
       char *arr[len];
       int n = 0;
-      char *curr = strtok(chrstr, "\t");
-      arr[0] = curr;
-
-      while (curr != NULL) {
-        curr = strtok(NULL, "\t");
-        arr[++n] = curr;
+      char *curr;
+      
+      char *string = strdup(line.c_str());
+      while ((curr = strsep(&string, "\t")) != NULL) {
+        arr[n++] = curr;
       }
       
-      // process arr
-      // std::cout << arr[stuid] << " in " << arr[5] << " in course " << arr[crsnbr] << "\n"; // "\r";
+      
       // add each student
       int cur_id = atoi(arr[stuid]);
       if (student_id != cur_id) {
@@ -62,40 +60,54 @@ CsvEnrollmentDataReader::CsvEnrollmentDataReader(std::istream & input) {
         // new student
         currStuSec->clear();
       }
-
       currStuSec->push_back(atoi(arr[crsnbr])); // add P - class nbr
-      student_id = cur_id;
-
+      
+      // navigate
+      int cur_idx = mstudents.size()-1;
+      
+      // process arr
+      // std::cout << "student " << arr[stuid] << "idx" << cur_idx << " in course " << arr[crsnbr] << "\n"; // "\r";
+      
+      int key = atoi(arr[crsnbr]);
+      auto found = dictKnownSections.find(key);
+      
       // add each section
-      if (dictKnownSections.find(atoi(arr[crsnbr])) != dictKnownSections.end()) {
+      if (found != dictKnownSections.end()) {
         // section exists
-        std::vector<int> secti = dictKnownSections.at(atoi(arr[crsnbr]));
-        secti.push_back(atoi(arr[stuid])); // add A - student ID
+        std::vector<int> secti = (*found).second; // dictKnownSections.at(atoi(arr[crsnbr]));
+        
+        if (std::find(secti.begin(), secti.end(), cur_id) == secti.end()) { // todo use set instead.
+          secti.push_back(cur_idx); // add cur_id student ID
+          dictKnownSections[key] = secti;
+        }
       } else {
         // new section
         std::vector<int> secti = std::vector<int>();
-        secti.push_back(atoi(arr[stuid]));
-        dictKnownSections.emplace(atoi(arr[crsnbr]), secti);
+        secti.push_back(cur_idx); // add cur_id
+        dictKnownSections.emplace(key, secti);
       }
       
+      // std::cout << "{\n"; // sanity check
+      // for(const auto &elem : dictKnownSections){
+      //   std::cout << "\t" << elem.first << ", " << elem.second.size() << "\n";
+      // }
+      // std::cout << "}\n"; // --
 
+      student_id = cur_id;
       printf("%.2f%\r", (i/620403.0)*100);
       i++;
     }
     // ??
     for (auto const &kv : dictKnownSections) {
       int course = kv.first;
-      std::vector<int> sts = kv.second;
-      std::shared_ptr<std::vector<std::size_t>> currSect = std::make_shared<std::vector<std::size_t>>();
-      for (int k : sts) currSect->push_back(k);
+      std::vector<int> stdnts(kv.second);
+      std::vector<std::size_t> sts(stdnts.begin(), stdnts.end());
+      std::shared_ptr<std::vector<std::size_t>> currSect = std::make_shared<std::vector<std::size_t>>(sts);
       Section secti = Section(currSect);
       msections.push_back(secti);
     }
 
     std::cout << mstudents.size() << " students, " << msections.size() << " sections." << std::endl;
-    // removeme (bad_alloc)
-    // const std::vector<Student> mstudents = mstudents;
-    // const std::vector<Section> msections = msections;
     this->sections = std::make_shared<const std::vector<Section>>(msections);
     this->students = std::make_shared<const std::vector<Student>>(mstudents);
     

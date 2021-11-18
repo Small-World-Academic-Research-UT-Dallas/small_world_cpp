@@ -22,11 +22,21 @@ double Student::get_contagiousness() const {
   return (this->status == infection_status::Infected) ? 1.0 : 0.0;
 }
 
+double Student::get_viral_load() {
+  return this->viral_load;
+}
+
 void Student::simulate_night() {
-  double infection_chance = 1.0 / (1.0 + pow(this->viral_load, this->parameters->get_r_value()));
-  this->viral_load = 0;
-  double rng = ((double) rand()) / ((double) RAND_MAX);
-  if(rng < infection_chance) this->status = infection_status::Infected;
+  // Currently 1/(1+x^(-r)) where x is viral load and r is 1.
+
+  double x = this->viral_load;
+  double r = 1; // this->parameters->get_r_value();
+  double threshold =  0.5; // ((double) rand()) / ((double) RAND_MAX);
+
+  double infection_chance = 1.0 / (1.0 + pow(x, -1*r));
+  // this->viral_load = 0; // for now, there is no timer. infected forever.
+  
+  if(infection_chance >= threshold) this->status = infection_status::Infected;
 }
 
 void Student::force_infection() {

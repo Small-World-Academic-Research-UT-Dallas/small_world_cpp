@@ -4,3 +4,4 @@ bin
 *.csv
 *.tsv
 .vscode/*
+*.out
